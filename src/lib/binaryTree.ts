@@ -5,6 +5,7 @@ export class BinaryTree<T> {
   private _comparer: TreeComparer<T>;
   private readonly left = "left";
   private readonly right = "right";
+
   constructor(fn: TreeComparer<T>) {
     this._root = null;
     this._comparer = fn;
@@ -75,10 +76,44 @@ export class BinaryTree<T> {
     return depth;
   }
 
-  public get(predicate: (value: T) => unknown): void {
-    const root = this._root?.getData();
+  public getByComparer(value: number): T | undefined {
+    if (!this._root) return undefined;
+    const current = this._root.getData();
+    if (!current) return undefined;
 
-    console.log(predicate(<T>root));
+    const currentValue = this._comparer(current);
+    if (currentValue === value) return current;
+
+    if (value > currentValue) {
+      const rightChild = this._root.getChild(this.right);
+      if (!rightChild) return undefined;
+      return this.findNode(rightChild, value);
+    }
+    if (value < currentValue) {
+      const leftChild = this._root.getChild(this.left);
+      if (!leftChild) return undefined;
+      return this.findNode(leftChild, value);
+    }
+    return undefined;
+  }
+
+  private findNode(current: Node<T>, value: number): T | undefined {
+    const data = current.getData();
+    if (!data) return undefined;
+
+    const currentValue = this._comparer(data);
+    if (currentValue === value) return data;
+
+    if (value > currentValue) {
+      const rightChild = current.getChild(this.right);
+      if (!rightChild) return undefined;
+      return this.findNode(rightChild, value);
+    }
+    if (value < currentValue) {
+      const leftChild = current.getChild(this.left);
+      if (!leftChild) return undefined;
+      return this.findNode(leftChild, value);
+    }
   }
 }
 

@@ -48,11 +48,10 @@ type Person = {
 };
 function binaryTree(): void {
   console.log("binaryTree : start");
-  const comparer: TreeComparer<Person> = (obj: Person) => {
-    return obj.age;
-  };
 
-  const populationTree = new BinaryTree<Person>(comparer);
+  const populationTree = new BinaryTree<Person>((obj: Person) => {
+    return obj.age;
+  });
   populationTree.add({ id: "19178199", name: "Paul", age: 10 });
   populationTree.add({ id: "19178200", name: "Voldemort", age: 7 });
   populationTree.add({ id: "19178201", name: "Prince", age: 8 });
@@ -60,9 +59,9 @@ function binaryTree(): void {
   populationTree.add({ id: "19178203", name: "Veronique", age: 12 });
   populationTree.add({ id: "19178203", name: "Ninja", age: 11 });
 
-  // console.log(JSON.stringify(populationTree, null, 4));
+  console.log(JSON.stringify(populationTree, null, 4));
   const root = populationTree.getRoot();
   // if (root) console.log(`tree depth: ${populationTree.depth(root)}`);
-  populationTree.get((x) => x.id === "19178199");
+  console.log(populationTree.getByComparer(9));
   console.log("binaryTree : end");
 }
