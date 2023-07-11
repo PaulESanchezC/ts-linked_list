@@ -10,9 +10,13 @@ export class BinaryTree<T> {
     this._comparer = fn;
   }
 
+  public getRoot(): Node<T> | undefined {
+    if (this._root) return this._root;
+    return undefined;
+  }
+
   public add(data: T): void {
     if (this._root === null) {
-      console.log("adding root node");
       this._root = new Node<T>(data);
       return;
     }
@@ -33,7 +37,6 @@ export class BinaryTree<T> {
           this.addNode(rightChild, data);
           return;
         } else {
-          console.log("adding right child");
           parent.addChild(this.right, data);
           return;
         }
@@ -43,12 +46,39 @@ export class BinaryTree<T> {
           this.addNode(leftChild, data);
           return;
         } else {
-          console.log("adding left child");
           parent.addChild(this.left, data);
           return;
         }
       }
     }
+  }
+
+  public depth(current: Node<T> | null): number {
+    if (!current) return 0;
+
+    let leftDepth = 0;
+    const leftChild = current.getChild(this.left);
+    if (leftChild) {
+      leftDepth = this.depth(leftChild);
+      if (leftDepth === -1) return -1;
+    }
+
+    let rightDepth = 0;
+    const rightChild = current.getChild(this.right);
+    if (rightChild) {
+      rightDepth = this.depth(rightChild);
+      if (rightDepth === -1) return -1;
+    }
+
+    console.log(`${leftDepth} , ${rightChild}`);
+    const depth = Math.max(leftDepth, rightDepth) + 1;
+    return depth;
+  }
+
+  public get(predicate: (value: T) => unknown): void {
+    const root = this._root?.getData();
+
+    console.log(predicate(<T>root));
   }
 }
 

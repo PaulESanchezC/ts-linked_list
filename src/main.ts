@@ -60,6 +60,9 @@ function binaryTree(): void {
   populationTree.add({ id: "19178203", name: "Veronique", age: 12 });
   populationTree.add({ id: "19178203", name: "Ninja", age: 11 });
 
-  console.log(JSON.stringify(populationTree, null, 4));
+  // console.log(JSON.stringify(populationTree, null, 4));
+  const root = populationTree.getRoot();
+  // if (root) console.log(`tree depth: ${populationTree.depth(root)}`);
+  populationTree.get((x) => x.id === "19178199");
   console.log("binaryTree : end");
 }
