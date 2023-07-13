@@ -1,5 +1,6 @@
 import { BinaryTree, TreeComparer } from "./lib/binaryTree";
 import { Func2 } from "./lib/delegate";
+import Graph from "./lib/graph";
 import LinkedList from "./lib/linkedList";
 
 main();
@@ -7,6 +8,7 @@ function main(): void {
   linkedList();
   delegates();
   binaryTree();
+  graph();
 }
 
 function linkedList(): void {
@@ -49,9 +51,13 @@ type Person = {
 function binaryTree(): void {
   console.log("binaryTree : start");
 
-  const populationTree = new BinaryTree<Person>((obj: Person) => {
-    return obj.age;
-  });
+  //wierd thing to do in this example, but this is a good option to have
+  const comparer: TreeComparer<Person> = (obj: Person) => {
+    let result = 0;
+    for (let i = 0; i < obj.name.length; i++) result += obj.id.charCodeAt(i);
+    return result;
+  };
+  const populationTree = new BinaryTree<Person>(comparer);
   populationTree.add({ id: "19178199", name: "Paul", age: 10 });
   populationTree.add({ id: "19178200", name: "Voldemort", age: 7 });
   populationTree.add({ id: "19178201", name: "Prince", age: 8 });
@@ -64,4 +70,25 @@ function binaryTree(): void {
   // if (root) console.log(`tree depth: ${populationTree.depth(root)}`);
   console.log(populationTree.getByComparer(9));
   console.log("binaryTree : end");
+}
+
+type Intersection = {
+  id: string;
+  routes: Array<[Route, InterceptionOption]>;
+  name: string;
+  number: number;
+};
+type InterceptionOption = {
+  traficControl: "stop" | "lights" | "none";
+  crossWalk: boolean;
+};
+type Route = {
+  traficDirrection: "one way" | "two way";
+  name: string;
+  code: string;
+};
+function graph(): void {
+  const roadMap = new Graph<Intersection, Route>();
+
+  
 }
